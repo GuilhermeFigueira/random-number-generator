@@ -5,27 +5,22 @@ const maxNumber = document.getElementById("maxNumber");
 const generatedResultTitle = document.getElementById("generatedResultTitle");
 const generatedResult = document.getElementById("generatedResult");
 
-let placeString = 1;
-
 const decimalToggle = document.getElementById("decimalToggle");
 const decimalPlaces = document.getElementById("decimalPlaces");
 const decimalPlacesDiv = document.getElementById("decimalPlacesDiv");
 
 const numberGenerator = createRandomNumberGenerator();
-numberGenerator.subscribe(appendResultToDOM);
 
-decimalToggle.addEventListener("change", () => {
+decimalToggle.addEventListener("change", (e) => {
+	numberGenerator.unsubscribe(appendResultToDOM);
 	decimalPlacesDiv.classList.toggle("hidden-div");
+	decimalToggle.checked
+		? numberGenerator.subscribe(addDecimalPlaces)
+		: numberGenerator.unsubscribe(addDecimalPlaces);
+	numberGenerator.subscribe(appendResultToDOM);
 });
 
-decimalPlaces.addEventListener("change", (e) => {
-	placeString = "1";
-	const step = e.target.value;
-	for (i = 0; i < step; i++) {
-		placeString += "0";
-	}
-	placeString = Number(placeString);
-});
+numberGenerator.subscribe(appendResultToDOM);
 
 document.addEventListener("DOMContentLoaded", () => {
 	const numbersToGenerateValue = Number(numbersToGenerate.value);
@@ -51,19 +46,23 @@ form.addEventListener("submit", (e) => {
 });
 
 function createRandomNumberGenerator() {
-	const observers = [];
+	let observers = [];
 
 	function subscribe(observerFunction) {
 		observers.push(observerFunction);
 	}
 
 	function unsubscribe(observerFunction) {
-		delete observers[observerFunction];
+		observers = observers.filter((func) => func !== observerFunction);
 	}
 
 	function notifyAll(info) {
+		let modifiedInfo = info;
 		for (const observerFunction of observers) {
-			observerFunction(info);
+			const result = observerFunction(modifiedInfo);
+			if (result) {
+				modifiedInfo = result;
+			}
 		}
 	}
 	function generate(values) {
@@ -87,6 +86,7 @@ function createRandomNumberGenerator() {
 	return {
 		subscribe,
 		generate,
+		unsubscribe,
 	};
 }
 
@@ -97,4 +97,23 @@ function appendResultToDOM(info) {
 	const numbers = info.numbers;
 	generatedResultTitle.textContent = `${quantity} numbers generated (from ${min}-${max})`;
 	generatedResult.textContent = `${numbers.join(", ")}`;
+}
+
+function addDecimalPlaces(info) {
+	let numbers = info.numbers;
+	const decimalQuantity = decimalPlaces.value;
+
+	numbers = numbers.map((number) => {
+		number = String(number);
+		let decimalPlacesString = ".";
+		for (let i = 0; i < decimalQuantity; i++) {
+			const randomPlaceNumber = Math.floor(Math.random() * 10);
+			decimalPlacesString += String(randomPlaceNumber);
+		}
+		return (number += decimalPlacesString);
+	});
+	return {
+		...info,
+		numbers,
+	};
 }

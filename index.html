@@ -9,14 +9,17 @@
 			<label for="decimalToggle">Decimal?</label>
 			<input type="checkbox" name="decimalToggle" id="decimalToggle" />
 			<div id="decimalPlacesDiv">
-				<label for="decimalPlaces"
-					>How many decimal places? (1-6)</label
-				>
-				<input type="number" id="decimalPlaces" value="1" />
+				<label for="decimalPlaces">How many decimal places?</label>
+				<input type="number" id="decimalPlaces" value="1" max="360" />
 			</div>
-			<input type="number" id="numbersToGenerate" value="1" />
-			<input type="number" id="minmNumber" value="0" />
-			<input type="number" id="maxNumber" value="100" />
+			<input
+				type="number"
+				id="numbersToGenerate"
+				value="1"
+				max="100000"
+			/>
+			<input type="number" id="minmNumber" value="0" max="1000000" />
+			<input type="number" id="maxNumber" value="100" max="1000000" />
 			<button>Generate!</button>
 		</form>
 		<div id="generatedResultTitle"></div>
