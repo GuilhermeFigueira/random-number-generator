@@ -57,6 +57,10 @@ function createRandomNumberGenerator() {
 		observers.push(observerFunction);
 	}
 
+	function unsubscribe(observerFunction) {
+		delete observers[observerFunction];
+	}
+
 	function notifyAll(info) {
 		for (const observerFunction of observers) {
 			observerFunction(info);
@@ -74,12 +78,7 @@ function createRandomNumberGenerator() {
 
 		for (let i = 0; i < quantity; i++) {
 			const randomNumber =
-				(Math.floor(
-					Math.random() *
-						(maxVal * placeString - minVal * placeString)
-				) +
-					minVal * placeString) /
-				(1 * placeString);
+				Math.floor(Math.random() * (maxVal - minVal)) + minVal;
 			numbers.push(randomNumber);
 		}
 
