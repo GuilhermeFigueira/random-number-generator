@@ -1,0 +1,12 @@
+.hidden-div {
+	display: none;
+}
+
+#randomNumberForm {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+input {
+	border: 1px solid black;
+}
