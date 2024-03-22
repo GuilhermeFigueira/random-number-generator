@@ -119,13 +119,21 @@ clearButton.addEventListener("click", () => {
 function appendResultToDOM(info) {
 	generatedResultTitle.textContent = "";
 	generatedResult.textContent = "";
+	console.log(info);
 	if ("minVal" in info && "maxVal" in info && "quantity" in info) {
 		const quantity = info.quantity;
 		const min = info.minVal;
 		const max = info.maxVal;
 		const numbers = info.numbers;
-		generatedResultTitle.textContent = `${quantity} numbers generated (from ${min}-${max})`;
-		generatedResult.textContent = `${numbers.join(", ")}`;
+		if (
+			quantity !== null &&
+			min !== null &&
+			max !== null &&
+			numbers !== null
+		) {
+			generatedResultTitle.textContent = `${quantity} numbers generated (from ${min}-${max})`;
+			generatedResult.textContent = `${numbers.join(", ")}`;
+		}
 	}
 }
 //================================================================================================

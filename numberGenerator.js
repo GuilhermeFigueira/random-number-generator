@@ -26,6 +26,10 @@ export default function createRandomNumberGenerator() {
 
 	function clearNumbers() {
 		numbers = [];
+		generatedNumbers = [];
+		minVal = null;
+		maxVal = null;
+		quantity = null;
 		notifyAll({ numbers });
 	}
 
