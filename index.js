@@ -28,6 +28,8 @@ const generatedResult = document.getElementById("generatedResult");
 const copyToClipboardButton = document.getElementById("copyToClipboardButton");
 const clearButton = document.getElementById("clearButton");
 
+const clearEveryTime = document.getElementById("clearEveryTime");
+
 //================================================================================================
 
 // Generate number when DOM loads
@@ -56,6 +58,12 @@ decimalToggle.addEventListener("change", (e) => {
 intervalToggle.addEventListener("change", (e) => {
 	intervalNumbersDiv.classList.toggle("hidden");
 	numbersToGenerate.classList.toggle("hidden");
+});
+
+clearEveryTime.addEventListener("change", (e) => {
+	// clearEveryTime.checked
+	// 	? numberGenerator.subscribe(numberGenerator.clearNumbers)
+	// 	: numberGenerator.unsubscribe(numberGenerator.clearNumbers);
 });
 //================================================================================================
 

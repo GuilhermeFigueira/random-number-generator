@@ -25,7 +25,7 @@ export default function createRandomNumberGenerator() {
 		notifyAll({ numbers });
 	}
 
-	function generate(values, decimal) {
+	function generate(values) {
 		let generatedNumbers = [];
 		let minVal = values.minNumberValue;
 		let maxVal = values.maxNumberValue;
@@ -41,7 +41,7 @@ export default function createRandomNumberGenerator() {
 			generatedNumbers.push(randomNumber);
 		}
 
-		numbers.push(generatedNumbers);
+		numbers.push(...generatedNumbers);
 		notifyAll({ numbers, generatedNumbers, minVal, maxVal, quantity });
 	}
 
