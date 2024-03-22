@@ -1,6 +1,10 @@
 export default function createRandomNumberGenerator() {
 	let observers = [];
 	let numbers = [];
+	let generatedNumbers = [];
+	let minVal;
+	let maxVal;
+	let quantity;
 
 	function subscribe(observerFunction) {
 		observers.push(observerFunction);
@@ -26,18 +30,25 @@ export default function createRandomNumberGenerator() {
 	}
 
 	function generate(values) {
-		let generatedNumbers = [];
-		let minVal = values.minNumberValue;
-		let maxVal = values.maxNumberValue;
-		let quantity = values.numbersToGenerateValue;
-
+		generatedNumbers = [];
+		minVal = values.minNumberValue;
+		maxVal = values.maxNumberValue;
+		quantity =
+			typeof values.numbersToGenerateValue === "object"
+				? Math.floor(
+						Math.random() *
+							(values.numbersToGenerateValue[1] -
+								values.numbersToGenerateValue[0] +
+								1)
+				  ) + values.numbersToGenerateValue[0]
+				: values.numbersToGenerateValue;
 		minVal = minVal ? minVal : 0;
 		maxVal = maxVal ? maxVal : 100;
 		quantity = quantity && quantity > 0 ? quantity : 1;
 
 		for (let i = 0; i < quantity; i++) {
 			const randomNumber =
-				Math.floor(Math.random() * (maxVal - minVal)) + minVal;
+				Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
 			generatedNumbers.push(randomNumber);
 		}
 
@@ -46,10 +57,18 @@ export default function createRandomNumberGenerator() {
 	}
 
 	function generateWithDecimal(values) {
-		let generatedNumbers = [];
-		let minVal = values.minNumberValue;
-		let maxVal = values.maxNumberValue;
-		let quantity = values.numbersToGenerateValue;
+		generatedNumbers = [];
+		minVal = values.minNumberValue;
+		maxVal = values.maxNumberValue;
+		quantity =
+			typeof values.numbersToGenerateValue === "object"
+				? Math.floor(
+						Math.random() *
+							(values.numbersToGenerateValue[1] -
+								values.numbersToGenerateValue[0] +
+								1)
+				  ) + values.numbersToGenerateValue[0]
+				: values.numbersToGenerateValue;
 		const places = values.decimalPlacesValue;
 
 		minVal = minVal ? minVal : 0;
@@ -58,7 +77,7 @@ export default function createRandomNumberGenerator() {
 
 		for (let i = 0; i < quantity; i++) {
 			const randomNumber =
-				Math.floor(Math.random() * (maxVal - minVal)) + minVal;
+				Math.floor(Math.random() * (maxVal - minVal + 1)) + minVal;
 			generatedNumbers.push(randomNumber);
 		}
 
@@ -82,6 +101,71 @@ export default function createRandomNumberGenerator() {
 			places,
 		});
 	}
+
+	function add(value) {
+		value = Number(value);
+		numbers = numbers.map((number) => {
+			number = number + value;
+			return number;
+		});
+
+		notifyAll({
+			numbers,
+			generatedNumbers,
+			minVal,
+			maxVal,
+			quantity,
+		});
+	}
+
+	function subtract(value) {
+		value = Number(value);
+		numbers = numbers.map((number) => {
+			number = number - value;
+			return number;
+		});
+
+		notifyAll({
+			numbers,
+			generatedNumbers,
+			minVal,
+			maxVal,
+			quantity,
+		});
+	}
+
+	function divide(value) {
+		value = Number(value);
+		numbers = numbers.map((number) => {
+			number = number / value;
+			return number;
+		});
+
+		notifyAll({
+			numbers,
+			generatedNumbers,
+			minVal,
+			maxVal,
+			quantity,
+		});
+	}
+
+	function multiply(value) {
+		value = Number(value);
+		numbers = numbers.map((number) => {
+			number = number * value;
+			return number;
+		});
+
+		notifyAll({
+			numbers,
+			generatedNumbers,
+			minVal,
+			maxVal,
+			quantity,
+		});
+	}
+
 	return {
 		numbers,
 		subscribe,
@@ -89,5 +173,9 @@ export default function createRandomNumberGenerator() {
 		unsubscribe,
 		clearNumbers,
 		generateWithDecimal,
+		add,
+		subtract,
+		divide,
+		multiply,
 	};
 }

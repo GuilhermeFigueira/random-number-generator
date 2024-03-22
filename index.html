@@ -62,7 +62,12 @@
 				</div>
 			</div>
 			<label for="clearEveryTime">Clear after every generation</label>
-			<input type="checkbox" name="clearEveryTime" id="clearEveryTime" />
+			<input
+				type="checkbox"
+				name="clearEveryTime"
+				id="clearEveryTime"
+				checked
+			/>
 			<button
 				class="p-[10px_20px] font-bold text-3xl bg-[hsl(122,39%,50%)] text-white rounded-lg"
 			>
@@ -78,6 +83,18 @@
 		>
 			Clear
 		</button>
+		<details>
+			<summary>Modification Options</summary>
+			<div>
+				<input type="number" id="modify" value="2" max="10000" />
+				<div class="flex flex-row gap-4">
+					<button id="add">Add</button>
+					<button id="subtract">Subtract</button>
+					<button id="divide">Divide</button>
+					<button id="multiply">Multiply</button>
+				</div>
+			</div>
+		</details>
 		<script src="index.js" type="module"></script>
 	</body>
 </html>
