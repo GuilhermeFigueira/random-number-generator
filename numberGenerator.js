@@ -5,6 +5,7 @@ export default function createRandomNumberGenerator() {
 	let minVal;
 	let maxVal;
 	let quantity;
+	let places;
 
 	function subscribe(observerFunction) {
 		observers.push(observerFunction);
@@ -24,16 +25,7 @@ export default function createRandomNumberGenerator() {
 		}
 	}
 
-	function clearNumbers() {
-		numbers = [];
-		generatedNumbers = [];
-		minVal = null;
-		maxVal = null;
-		quantity = null;
-		notifyAll({ numbers });
-	}
-
-	function generate(values) {
+	function setNumbers(values) {
 		generatedNumbers = [];
 		minVal = values.minNumberValue;
 		maxVal = values.maxNumberValue;
@@ -49,6 +41,20 @@ export default function createRandomNumberGenerator() {
 		minVal = minVal ? minVal : 0;
 		maxVal = maxVal ? maxVal : 100;
 		quantity = quantity && quantity > 0 ? quantity : 1;
+		if ("decimalPlacesValue" in values) places = values.decimalPlacesValue;
+	}
+
+	function clearNumbers() {
+		numbers = [];
+		generatedNumbers = [];
+		minVal = null;
+		maxVal = null;
+		quantity = null;
+		notifyAll({ numbers });
+	}
+
+	function generate(values) {
+		setNumbers(values);
 
 		for (let i = 0; i < quantity; i++) {
 			const randomNumber =
@@ -61,23 +67,7 @@ export default function createRandomNumberGenerator() {
 	}
 
 	function generateWithDecimal(values) {
-		generatedNumbers = [];
-		minVal = values.minNumberValue;
-		maxVal = values.maxNumberValue;
-		quantity =
-			typeof values.numbersToGenerateValue === "object"
-				? Math.floor(
-						Math.random() *
-							(values.numbersToGenerateValue[1] -
-								values.numbersToGenerateValue[0] +
-								1)
-				  ) + values.numbersToGenerateValue[0]
-				: values.numbersToGenerateValue;
-		const places = values.decimalPlacesValue;
-
-		minVal = minVal ? minVal : 0;
-		maxVal = maxVal ? maxVal : 100;
-		quantity = quantity && quantity > 0 ? quantity : 1;
+		setNumbers(values);
 
 		for (let i = 0; i < quantity; i++) {
 			const randomNumber =
@@ -109,6 +99,7 @@ export default function createRandomNumberGenerator() {
 	function add(value) {
 		value = Number(value);
 		numbers = numbers.map((number) => {
+			number = Number(number);
 			number = number + value;
 			return number;
 		});
